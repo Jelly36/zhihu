@@ -2,9 +2,10 @@
     <div class="validate-input-container pb-3">
         <input type="text"
             class="form-control"
-            :class="{'isInvalid': inputRef.error}"
-            v-model="inputRef.val"
+            :class="{'is-invalid': inputRef.error}"
+            :value="inputRef.val"
             @blur="validateInput"
+               @input="updateValue"
         >
         <span v-if="inputRef.error" class="invalid-feedback">{{inputRef.message}}</span>
     </div>
@@ -15,6 +16,11 @@ import { defineComponent, reactive, PropType } from 'vue'
 const emailReg = /^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;
 interface RuleProp {
     type: 'required' | 'email';
+    message: string
+}
+interface DataProp{
+    val: string,
+    error: boolean,
     message: string
 }
 export type RulesProp = RuleProp[];
@@ -31,15 +37,22 @@ const ruleType = {
 
 export default defineComponent({
     props: {
-        rules: ruleType
-    }, 
-    setup(props){
-        const inputRef = reactive({
-            val: '',
+        rules: ruleType,
+        modelValue: {
+            type: String
+        }
+    },
+    setup(props,context){
+        const inputRef:DataProp = reactive({
+            val: props.modelValue as string,
             error: false,
             message: ''
         });
-
+        const updateValue = (e: KeyboardEvent) => {
+            const targetValue = (e.target as HTMLInputElement).value
+            inputRef.val = targetValue
+            context.emit('update:modelValue',targetValue)
+        }
         const validateInput = () => {
             if(props.rules) {
                 const allPassed = props.rules.some(rule => {
@@ -57,7 +70,8 @@ export default defineComponent({
         }
         return {
             inputRef,
-            validateInput
+            validateInput,
+            updateValue
         }
     }
 })

@@ -2,10 +2,10 @@
   <div class="container">
     <global-header :user="currentUser"></global-header>
     <!-- <column-list :list="list"></column-list> -->
-    <form class="was-validated">
+    <form>
       <div class="mb-3">
         <label class="form-label">邮箱地址</label>
-        <validate-input :rules="emailRules"></validate-input>
+        <validate-input :rules="emailRules" v-model="emailVal" >{{emailVal}}</validate-input>
       </div>
       <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">密码</label>
@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, ref} from "vue";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ColumnList, { ColumnProps } from "./components/ColumnList.vue";
 import validateInput, { RulesProp } from "./components/ValidateInput.vue"
@@ -60,6 +60,7 @@ export default defineComponent({
       { type: 'required', message: '电子邮件格式不能为空'},
       { type: 'email', message: '请输入正确的电子邮箱格式'}
     ]
+      const emailVal = ref('daisy')
     const emailRef = reactive({
       val: "",
       error: false,
@@ -79,7 +80,8 @@ export default defineComponent({
       currentUser: userInfo,
       emailRef,
       validateEmail,
-      emailRules
+      emailRules,
+      emailVal
     };
   },
   components: { ColumnList, GlobalHeader,validateInput },
