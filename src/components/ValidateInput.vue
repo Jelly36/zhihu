@@ -1,8 +1,8 @@
-tc<template>
+<template>
     <div class="validate-input-container pb-3">
         <input type="text"
             class="form-control"
-            :class={'isInvalid':inputRef.error}
+            :class="{'isInvalid': inputRef.error}"
             v-model="inputRef.val"
             @blur="validateInput"
         >
@@ -11,26 +11,38 @@ tc<template>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, PropType} from 'vue'
+import { defineComponent, reactive, PropType } from 'vue'
 const emailReg = /^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;
-interface RuleProp{
+interface RuleProp {
     type: 'required' | 'email';
     message: string
 }
-export type RulesProp = RuleProp[]
+export type RulesProp = RuleProp[];
+
+const ruleType = {
+    type: Array as PropType<RulesProp>,
+    default: () => [
+        {
+            type: "email",
+            message: ""
+        }
+    ]
+} as any;
+
 export default defineComponent({
     props: {
-        rules: Array as PropType<RulesProp>
-    },
+        rules: ruleType
+    }, 
     setup(props){
         const inputRef = reactive({
             val: '',
             error: false,
             message: ''
-        })
+        });
+
         const validateInput = () => {
             if(props.rules) {
-                const allPassed = props.rules.every(rule => {
+                const allPassed = props.rules.some(rule => {
                     let passed = true
                     inputRef.message = rule.message
                     switch(rule.type){
