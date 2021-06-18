@@ -1,11 +1,12 @@
 <template>
     <div class="validate-input-container pb-3">
-        <input type="text"
+        <input
             class="form-control"
             :class="{'is-invalid': inputRef.error}"
             :value="inputRef.val"
             @blur="validateInput"
                @input="updateValue"
+            v-bind="$attrs"
         >
         <span v-if="inputRef.error" class="invalid-feedback">{{inputRef.message}}</span>
     </div>
@@ -42,7 +43,9 @@ export default defineComponent({
             type: String
         }
     },
+    inheritAttrs:false,
     setup(props,context){
+        console.log(context.attrs)
         const inputRef:DataProp = reactive({
             val: props.modelValue as string,
             error: false,
@@ -66,7 +69,9 @@ export default defineComponent({
                     return passed
                 })
                 inputRef.error = !allPassed
+                return allPassed
             }
+            return true
         }
         return {
             inputRef,

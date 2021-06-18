@@ -11,7 +11,7 @@
         </li>
       </ul>
       <ul v-else class="list-inline mb-0">
-        <drop-down  title="`你好 ${user.name}`">
+        <drop-down  :title="`你好 ${user.name}`">
           <drop-down-itm><a class="dropdown-item" href="#">新建文章</a></drop-down-itm>
           <drop-down-itm  disabled><a class="dropdown-item" href="#">编辑资料</a></drop-down-itm>
           <drop-down-itm><a class="dropdown-item" href="#">退出登录</a></drop-down-itm>
