@@ -13,7 +13,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, PropType } from 'vue'
+import { defineComponent, reactive, PropType, onMounted } from 'vue'
+import { emitter } from './ValidateForm.vue'
 const emailReg = /^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;
 interface RuleProp {
     type: 'required' | 'email';
@@ -45,7 +46,6 @@ export default defineComponent({
     },
     inheritAttrs:false,
     setup(props,context){
-        console.log(context.attrs)
         const inputRef:DataProp = reactive({
             val: props.modelValue as string,
             error: false,
@@ -56,9 +56,10 @@ export default defineComponent({
             inputRef.val = targetValue
             context.emit('update:modelValue',targetValue)
         }
+        // 校验输入的email格式
         const validateInput = () => {
             if(props.rules) {
-                const allPassed = props.rules.some(rule => {
+                const allPassed = props.rules.every(rule => {
                     let passed = true
                     inputRef.message = rule.message
                     switch(rule.type){
@@ -66,13 +67,18 @@ export default defineComponent({
                         case 'email': passed = (emailReg.test(inputRef.val))  ;break;
                         default: break
                     }
+
                     return passed
                 })
+
                 inputRef.error = !allPassed
                 return allPassed
             }
             return true
         }
+        onMounted(()=> {
+            emitter.emit('form-item-created',inputRef.val)
+        })
         return {
             inputRef,
             validateInput,
