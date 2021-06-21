@@ -27,25 +27,28 @@ interface DataProp{
 }
 export type RulesProp = RuleProp[];
 
-const ruleType = {
-    type: Array as PropType<RulesProp>,
-    default: () => [
-        {
-            type: "email",
-            message: ""
-        }
-    ]
-} as any;
+interface Props {
+    rules: RulesProp,
+    modelValue: string
+}
 
 export default defineComponent({
     props: {
-        rules: ruleType,
+        rules: {
+            type: Array as PropType<RulesProp>,
+            default: () => [
+                {
+                    type: "email",
+                    message: ""
+                }
+            ]
+        },
         modelValue: {
             type: String
         }
     },
     inheritAttrs:false,
-    setup(props,context){
+    setup(props:Props,context){
         const inputRef:DataProp = reactive({
             val: props.modelValue as string,
             error: false,
