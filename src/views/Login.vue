@@ -11,20 +11,20 @@
                 <validate-input :rules="passwordRules" v-model="passwordVal" type="password"
                                 placeholder="请输入密码"></validate-input>
             </div>
-<!--            <template #submit>-->
-<!--                <button class="btn btn-primary">提交</button>-->
-<!--            </template>-->
         </validate-form>
     </div>
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
+
 import { useRouter } from 'vue-router'
 import validateInput, { RulesProp } from '@/components/ValidateInput.vue'
 import ValidateForm from '@/components/ValidateForm.vue'
+import { useStore } from 'vuex'
 export default defineComponent({
     name:'Login',
     setup () {
+        const store = useStore()
         const inputRef = ref<any>()
         const router = useRouter()
         const emailVal = ref('')
@@ -49,9 +49,10 @@ export default defineComponent({
         })
 
         const onFormSubmit = (result: boolean) => {
-            console.log('123', result)
             if(result){
-                router.push({name:'column', params:{id:1}})
+                router.push('/')
+                store.commit('login')
+                console.log(store.state.user)
             }
         }
         return {

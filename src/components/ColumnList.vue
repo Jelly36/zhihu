@@ -14,13 +14,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref } from "vue";
-export interface ColumnProps {
-  id: number;
-  title: string;
-  avatar?: string;
-  description: string;
-}
+import { computed, defineComponent, PropType } from "vue";
+import {ColumnProps} from '@/testData'
+
 interface Props{
     list: ColumnProps[]
 }
@@ -33,7 +29,6 @@ export default defineComponent({
             }
         },
         setup(props:Props) {
-            debugger
             const columnList = computed(()=>{
                 return props.list.map(item => {
                     if(!item.avatar) {

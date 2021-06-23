@@ -33,8 +33,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed} from 'vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { useStore } from 'vuex'
 import GlobalHeader, { UserProps } from './components/GlobalHeader.vue'
 import ValidateForm from './components/ValidateForm.vue'
 
@@ -45,8 +46,12 @@ const userInfo: UserProps = {
 export default defineComponent({
     name: 'App',
     setup () {
+        const store = useStore()
+        const currentUser = computed(()=> {
+            return store.state.user
+        })
         return {
-            currentUser: userInfo,
+            currentUser
         }
     },
     components: {

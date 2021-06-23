@@ -59,7 +59,7 @@ export default defineComponent({
             inputRef.val = targetValue
             context.emit('update:modelValue',targetValue)
         }
-        // 校验输入的email格式
+        // 校验每个input的格式是否正确
         const validateInput = () => {
             if(props.rules) {
                 const allPassed = props.rules.every(rule => {
@@ -80,7 +80,7 @@ export default defineComponent({
             return true
         }
         onMounted(()=> {
-            emitter.emit('form-item-created',inputRef.val)
+            emitter.emit('form-item-created',validateInput)
         })
         return {
             inputRef,

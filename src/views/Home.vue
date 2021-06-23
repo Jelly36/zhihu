@@ -16,35 +16,21 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
-import ColumnList, { ColumnProps } from '@/components/ColumnList.vue'
+import { defineComponent,computed } from 'vue'
+import { useStore } from 'vuex'
+import { GlobalDataProps } from '@/store'
+import ColumnList from '@/components/ColumnList.vue'
 
-const testData: ColumnProps[] = [
-    {
-        id: 1,
-        title: 'test1的专栏',
-        description: '这里是test1的专栏，有一段非常有意思的简介，可以更新一下喔',
-        avatar:
-            'https://user-center.cdn.bcebos.com/head/raw/uc.101.1b1d2eda.zn5K9zt_t5fghr6kh8ZHuw?x-bce-process=image/resize,m_lfit,w_200,h_200&autime=16',
-    },
-    {
-        id: 2,
-        title: 'test2的专栏',
-        description: '这里是test2的专栏，有一段非常有意思的简介，可以更新一下喔',
-        avatar:
-            'https://user-center.cdn.bcebos.com/head/raw/uc.101.1b1d2eda.zn5K9zt_t5fghr6kh8ZHuw?x-bce-process=image/resize,m_lfit,w_200,h_200&autime=16',
-    },
-    {
-        id: 3,
-        title: 'test3的专栏',
-        description: '这里是test3的专栏，有一段非常有意思的简介，可以更新一下喔',
-    },
-]
+
 export default defineComponent({
     name: 'Home',
     setup(){
+        const store = useStore<GlobalDataProps>()
+        const list = computed(()=> {
+            return store.state.columns
+        })
         return {
-            list: testData,
+            list
         }
     },
     components: {
