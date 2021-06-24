@@ -29,6 +29,7 @@ export default defineComponent({
         const list = computed(()=> {
             return store.state.columns
         })
+        const biggerColumnLen = computed(() => store.getters.biggerColumnsLen)
         return {
             list
         }
