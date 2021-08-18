@@ -8,7 +8,7 @@
                         <router-link to="/login" class="btn btn-outline-light">登录</router-link>
                     </li>
                     <li class="list-inline-item">
-                        <router-link to="/login" class="btn btn-outline-light">注册</router-link>
+                        <router-link to="/sign" class="btn btn-outline-light">注册</router-link>
                     </li>
                 </ul>
                 <ul v-else class="list-inline mb-0">
