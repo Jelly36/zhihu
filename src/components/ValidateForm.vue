@@ -22,7 +22,6 @@ export default defineComponent({
             context.emit('form-submit', result)
         }
         const callback = (func: ValidateFunc) => {
-            console.log(func)
             funcArr.push(func)
         }
         emitter.on('form-item-created', callback)

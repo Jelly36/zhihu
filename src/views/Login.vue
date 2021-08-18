@@ -21,6 +21,7 @@ import { useRouter } from 'vue-router'
 import validateInput, { RulesProp } from '@/components/ValidateInput.vue'
 import ValidateForm from '@/components/ValidateForm.vue'
 import { useStore } from 'vuex'
+import createMessage from '@/components/createMessage'
 export default defineComponent({
     name:'Login',
     setup () {
@@ -50,9 +51,18 @@ export default defineComponent({
 
         const onFormSubmit = (result: boolean) => {
             if(result){
-                router.push('/')
-                store.commit('login')
-                console.log(store.state.user)
+                const payload = {
+                    email: emailVal.value,
+                    password: passwordVal.value
+                }
+                store.dispatch('login',payload).then(data => {
+                    createMessage('登录成功，两秒后跳转首页', 'success')
+                    setTimeout(() => {
+                        router.push('/')
+                    },2000)
+                }).catch(e => {
+                    console.log(e)
+                })
             }
         }
         return {

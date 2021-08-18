@@ -1,33 +1,37 @@
 import { createApp } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import router from './router'
 import store from './store'
-import Home from './views/Home.vue'
-import Login from './views/Login.vue'
-import ColumnDetail from './views/ColumnDetail.vue'
-
+import axios from 'axios'
 import App from './App.vue'
 
-const routerHistory = createWebHistory()
-const router = createRouter({
-  history: routerHistory,
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component:Home
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component:Login
-    },
-    {
-      path: '/column/:id',
-      name: 'column',
-      component:ColumnDetail
-    }
-  ]
+axios.defaults.baseURL = 'http://localhost:8080/api/'
+
+axios.interceptors.request.use(config => {
+    store.commit('setLoading', true)
+    store.commit('setError', {
+        status: false,
+        message: ''
+    })
+
+    return config
 })
+axios.interceptors.response.use(config => {
+    store.commit('setLoading', false)
+    return config
+}, e => {
+    console.log(e.response)
+    const { error } = e.response.data
+    store.commit('setError', {
+        status: true,
+        message: error
+    })
+    store.commit('setLoading', false)
+    return Promise.reject(error)
+})
+
+async function hello () {
+    return 'hello'
+}
 
 const app = createApp(App)
 app.use(router)
